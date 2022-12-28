@@ -20,10 +20,10 @@ type gameUseCase struct {
 }
 
 func NewGameUseCase() GameUseCase {
-	return gameUseCase{gameRepository: repository.NewGameRepository()}
+	return &gameUseCase{gameRepository: repository.NewGameRepository()}
 }
 
-func (u gameUseCase) GetGame(gameId string) (entity.Game, error) {
+func (u *gameUseCase) GetGame(gameId string) (entity.Game, error) {
 	game, err := u.gameRepository.Get(gameId)
 	if err != nil {
 		logger.Error(fmt.Sprintf("game get error: %s", err.Error()))
@@ -32,12 +32,12 @@ func (u gameUseCase) GetGame(gameId string) (entity.Game, error) {
 	return game, nil
 }
 
-func (u gameUseCase) CallNumber(gameId string) (entity.Game, error) {
+func (u *gameUseCase) CallNumber(gameId string) (entity.Game, error) {
 	game, err := u.gameRepository.CallNumber(gameId)
 	return game, err
 }
 
-func (u gameUseCase) CreateGame(names []string) entity.Game {
+func (u *gameUseCase) CreateGame(names []string) entity.Game {
 	game := entity.Game{
 		Id:            uuid.New().String(),
 		CalledNumbers: []int8{},

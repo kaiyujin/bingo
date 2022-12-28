@@ -31,7 +31,7 @@ func NewGameRepository() GameRepository {
 	return g
 }
 
-func (r gameRepository) Create(game entity.Game) {
+func (r *gameRepository) Create(game entity.Game) {
 	g, err := attributevalue.MarshalMap(game)
 	if err != nil {
 		fmt.Printf("dynamodb marshal: %s\n", err.Error())
@@ -49,7 +49,7 @@ func (r gameRepository) Create(game entity.Game) {
 	}
 }
 
-func (r gameRepository) Get(gameId string) (entity.Game, error) {
+func (r *gameRepository) Get(gameId string) (entity.Game, error) {
 	ctx, cancel := context.WithTimeout(context.TODO(), infrastructure.DynamoDefaultTimeout)
 	defer cancel()
 	output, err := r.DynamoDbClient.GetItem(ctx, &dynamodb.GetItemInput{
@@ -73,7 +73,7 @@ func (r gameRepository) Get(gameId string) (entity.Game, error) {
 	return game, nil
 }
 
-func (r gameRepository) CallNumber(gameId string) (entity.Game, error) {
+func (r *gameRepository) CallNumber(gameId string) (entity.Game, error) {
 	rn := calc.RandomNumber()
 	game, err := r.Get(gameId)
 	game.CalledNumbers = append(game.CalledNumbers, rn)

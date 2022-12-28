@@ -16,7 +16,7 @@ aws_secret_access_key = dummy
 ## Usage
 
 When vm is not running  
-`make vm-start`
+`make start-vm`
 
 Start containers  
 `make setup`
